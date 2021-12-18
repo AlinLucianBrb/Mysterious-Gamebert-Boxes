@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
     Rigidbody2D rigidbody2D;
-    public float jump = 5;
-    public float speed = 5;
-
     bool grounded;
-
-    bool isGoingLeft;
-    bool isGoingRight;
-    bool isJumping;
+    bool movingLeft = true;
+    bool holeAhead;
 
     void Start()
     {
@@ -21,29 +16,28 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        isGoingLeft = Input.GetKey(KeyCode.A) ? true : false;
-        isGoingRight = Input.GetKey(KeyCode.D) ? true : false;
-        isJumping = Input.GetKeyDown(KeyCode.Space) ? true : false;
-
-        if (isGoingLeft && Mathf.Abs(rigidbody2D.velocity.x) <= 5)
+        if(movingLeft && grounded && !holeAhead && Mathf.Abs(rigidbody2D.velocity.x) <= 2.5f)
         {
             rigidbody2D.AddForce(Vector2.left * 2);
         }
 
-        if (isGoingRight && Mathf.Abs(rigidbody2D.velocity.x) <= 5)
+        if(!movingLeft && grounded && !holeAhead && Mathf.Abs(rigidbody2D.velocity.x) <= 2.5f)
         {
             rigidbody2D.AddForce(Vector2.right * 2);
         }
 
-        if (isJumping && grounded)
+        if(holeAhead)
         {
-            rigidbody2D.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
+            movingLeft = movingLeft ? false : true;
+            rigidbody2D.velocity = new Vector2(0, rigidbody2D.velocity.y);
+            holeAhead = false;
         }
     }
 
     void OnCollisionStay2D(Collision2D collider)
     {
         CheckIfGrounded();
+        CheckIfHoleAhead();
     }
 
     void OnCollisionExit2D(Collision2D collider)
@@ -61,6 +55,20 @@ public class PlayerController : MonoBehaviour
         if (hits.Length > 0)
         {
             grounded = true;
+        }
+    }
+
+    private void CheckIfHoleAhead()
+    {
+        RaycastHit2D[] hits;
+
+        Vector2 positionToCheck = transform.position;
+        Vector2 direction = movingLeft ? new Vector2(-0.5f, -1) : new Vector2(0.5f, -1);
+        hits = Physics2D.RaycastAll(positionToCheck, direction, 1f);
+
+        if (hits.Length == 1)
+        {
+            holeAhead = true;
         }
     }
 }

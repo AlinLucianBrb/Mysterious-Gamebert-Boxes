@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class TriggerComponent : MonoBehaviour
 {
-    public GameObject triggerObject;
+    public GameObject[] triggerObjects;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(triggerObject.activeSelf)
+        foreach(GameObject triggerObject in triggerObjects)
         {
-            triggerObject.SetActive(false);
-        }
-        else
-        {
-            triggerObject.SetActive(true);
-        }
+            if (triggerObject.activeSelf)
+            {
+                triggerObject.SetActive(false);
+            }
+            else
+            {
+                triggerObject.SetActive(true);
+            }
+        }       
     }
 }

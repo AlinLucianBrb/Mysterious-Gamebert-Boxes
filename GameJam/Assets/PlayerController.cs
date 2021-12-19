@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     public float speed = 5;
 
     bool grounded;
+    bool wallLeft;
+    bool wallRight;
 
     bool isGoingLeft;
     bool isGoingRight;
@@ -25,17 +27,17 @@ public class PlayerController : MonoBehaviour
         isGoingRight = Input.GetKey(KeyCode.D) ? true : false;
         isJumping = Input.GetKeyDown(KeyCode.Space) ? true : false;
 
-        if (isGoingLeft && Mathf.Abs(rigidbody2D.velocity.x) <= 5)
+        if (isGoingLeft && rigidbody2D.velocity.x >= -5 && !wallLeft)
         {
             rigidbody2D.AddForce(Vector2.left * 2);
         }
 
-        if (isGoingRight && Mathf.Abs(rigidbody2D.velocity.x) <= 5)
+        if (isGoingRight && rigidbody2D.velocity.x <= 5 && !wallRight)
         {
             rigidbody2D.AddForce(Vector2.right * 2);
         }
 
-        if (isJumping && grounded)
+        if (isJumping && grounded && !wallLeft && !wallRight)
         {
             rigidbody2D.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
         }
@@ -44,11 +46,15 @@ public class PlayerController : MonoBehaviour
     void OnCollisionStay2D(Collision2D collider)
     {
         CheckIfGrounded();
+        CheckIfWallLeft();
+        CheckIfWallRight();
     }
 
     void OnCollisionExit2D(Collision2D collider)
     {
         grounded = false;
+        wallLeft = false;
+        wallRight = false;
     }
 
     private void CheckIfGrounded()
@@ -61,6 +67,40 @@ public class PlayerController : MonoBehaviour
         if (hits.Length > 0)
         {
             grounded = true;
+        }
+    }
+
+    private void CheckIfWallLeft()
+    {
+        RaycastHit2D[] hits;
+
+        Vector2 positionToCheck = transform.position;
+        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(-1, 0), 0.26f);
+
+        if (hits.Length > 1)
+        {
+            wallLeft = true;
+        }
+        else
+        {
+            wallLeft = false;
+        }
+    }
+
+    private void CheckIfWallRight()
+    {
+        RaycastHit2D[] hits;
+
+        Vector2 positionToCheck = transform.position;
+        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(1, 0), 0.26f);
+
+        if (hits.Length > 1)
+        {
+            wallRight = true;
+        }
+        else
+        {
+            wallRight = false;
         }
     }
 }

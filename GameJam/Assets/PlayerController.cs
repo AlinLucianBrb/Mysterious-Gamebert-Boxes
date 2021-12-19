@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour
     bool isGoingRight;
     bool isJumping;
 
+    [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
     void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
@@ -26,16 +29,24 @@ public class PlayerController : MonoBehaviour
         isGoingLeft = Input.GetKey(KeyCode.A) ? true : false;
         isGoingRight = Input.GetKey(KeyCode.D) ? true : false;
         isJumping = Input.GetKeyDown(KeyCode.Space) ? true : false;
+ 
+        animator.SetFloat("Velocity", 0);
+        animator.SetBool("Grounded", grounded);
+        animator.SetFloat("Velocity", rigidbody2D.velocity.x);
 
         if (isGoingLeft && rigidbody2D.velocity.x >= -5 && !wallLeft)
         {
             rigidbody2D.AddForce(Vector2.left * 2);
+            spriteRenderer.flipX = true;
         }
 
         if (isGoingRight && rigidbody2D.velocity.x <= 5 && !wallRight)
         {
             rigidbody2D.AddForce(Vector2.right * 2);
+            spriteRenderer.flipX = false;
         }
+
+        if (isJumping && grounded) { animator.SetTrigger("Jump"); }
 
         if (isJumping && grounded && !wallLeft && !wallRight)
         {

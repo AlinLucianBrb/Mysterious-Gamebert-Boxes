@@ -41,5 +41,7 @@ public class BounceComponent : MonoBehaviour
     {
         collider.gameObject.GetComponent<Rigidbody2D>().AddForce(bounceDirection * bouncePower, ForceMode2D.Impulse);
         collider.gameObject.GetComponentInChildren<Animator>().SetTrigger("Jump");
+
+        GetComponent<AudioSource>().Play();
     }
 }

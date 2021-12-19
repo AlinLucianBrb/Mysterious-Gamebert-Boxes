@@ -14,6 +14,8 @@ public class TeleportComponent : MonoBehaviour
             Vector3 relativePos = transform.InverseTransformPoint(collision.transform.position);
             collision.transform.position = teleport.transform.position + relativePos;
             teleport.teleported = true;
+
+            GetComponent<AudioSource>().Play();
         }       
     }
 

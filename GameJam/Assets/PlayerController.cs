@@ -38,20 +38,21 @@ public class PlayerController : MonoBehaviour
 
         if (isGoingLeft && rigidbody2D.velocity.x >= -5 && !wallLeft)
         {
-            rigidbody2D.AddForce(Vector2.left * 2);
+            rigidbody2D.AddForce(Vector2.left * 4);
             spriteRenderer.flipX = true;
         }
 
         if (isGoingRight && rigidbody2D.velocity.x <= 5 && !wallRight)
         {
-            rigidbody2D.AddForce(Vector2.right * 2);
+            rigidbody2D.AddForce(Vector2.right * 4);
             spriteRenderer.flipX = false;
         }
 
         if (isJumping && rigidbody2D.velocity.y <= 7.5f && grounded && !wallLeft && !wallRight)
         {
-            rigidbody2D.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
+            rigidbody2D.AddForce(new Vector2(0, 6), ForceMode2D.Impulse);
             animator.SetTrigger("Jump");
+            GetComponent<AudioSource>().Play();
         }
 
         Debug.Log(wallRight);

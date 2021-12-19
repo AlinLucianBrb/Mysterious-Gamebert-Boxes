@@ -12,17 +12,14 @@ public class CheckPointComponent : MonoBehaviour
         checkPointReached = new bool[6];    
     }
 
-    void Update()
+    public void Respawn()
     {
-        if(Input.GetKeyDown(KeyCode.X))
+        for (int i = checkPointReached.Length - 1; i >= 0; i--)
         {
-            for (int i = checkPointReached.Length - 1; i >= 0; i--)
+            if (checkPointReached[i])
             {
-                if(checkPointReached[i])
-                {
-                    transform.position = checkpointSpawns[i].position;
-                    return;
-                }
+                transform.position = checkpointSpawns[i].position;
+                return;
             }
         }
     }

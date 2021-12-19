@@ -18,6 +18,8 @@ public class TriggerComponent : MonoBehaviour
             {
                 triggerObject.SetActive(true);
             }
-        }       
+        }
+
+        GetComponent<AudioSource>().Play();
     }
 }

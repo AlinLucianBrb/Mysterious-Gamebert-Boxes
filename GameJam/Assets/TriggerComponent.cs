@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TriggerComponent : MonoBehaviour
 {
-    public GameObject[] triggerObjects;
+    public List<GameObject> triggerObjects;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

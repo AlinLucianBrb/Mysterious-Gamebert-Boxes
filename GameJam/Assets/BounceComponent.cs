@@ -40,5 +40,6 @@ public class BounceComponent : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collider)
     {
         collider.gameObject.GetComponent<Rigidbody2D>().AddForce(bounceDirection * bouncePower, ForceMode2D.Impulse);
+        collider.gameObject.GetComponentInChildren<Animator>().SetTrigger("Jump");
     }
 }

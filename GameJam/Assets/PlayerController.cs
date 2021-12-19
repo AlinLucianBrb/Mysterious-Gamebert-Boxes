@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
  
         animator.SetFloat("Velocity", 0);
         animator.SetBool("Grounded", grounded);
-        animator.SetFloat("Velocity", rigidbody2D.velocity.x);
+        animator.SetFloat("Velocity", Mathf.Abs(rigidbody2D.velocity.x));
 
         if (isGoingLeft && rigidbody2D.velocity.x >= -5 && !wallLeft)
         {
@@ -48,13 +48,13 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.flipX = false;
         }
 
-        if (isJumping && grounded && !wallLeft && !wallRight)
+        if (isJumping && rigidbody2D.velocity.y <= 7.5f && grounded && !wallLeft && !wallRight)
         {
             rigidbody2D.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
             animator.SetTrigger("Jump");
         }
 
-        Debug.Log(wallLeft);
+        Debug.Log(wallRight);
     }
 
     void OnCollisionStay2D(Collision2D collider)
@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D[] hits;
 
         Vector2 positionToCheck = transform.position;
-        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(0, -1), 5f);
+        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(0, -1), 0.76f, layerMask);
 
         if (hits.Length > 0)
         {
@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D[] hits;
 
         Vector2 positionToCheck = transform.position;
-        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(-1, 0), 0.26f, layerMask);
+        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(-1, 0), 0.51f, layerMask);
         if (hits.Length > 0)
         {
             wallLeft = true;
@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
         }
 
         positionToCheck = transform.position + new Vector3(0,GetComponent<Collider2D>().bounds.extents.y,0);
-        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(-1, 0), 0.26f, layerMask);
+        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(-1, 0), 0.51f, layerMask);
 
         if (hits.Length > 0)
         {
@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour
         }
 
         positionToCheck = transform.position - new Vector3(0, GetComponent<Collider2D>().bounds.extents.y, 0);
-        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(-1, 0), 0.26f, layerMask);
+        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(-1, 0), 0.51f, layerMask);
 
         if (hits.Length > 0)
         {
@@ -136,7 +136,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D[] hits;
 
         Vector2 positionToCheck = transform.position;
-        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(1, 0), 0.26f, layerMask);
+        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(1, 0), 0.51f, layerMask);
 
         if (hits.Length > 0)
         {
@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviour
         }
 
         positionToCheck = transform.position + new Vector3(0, GetComponent<Collider2D>().bounds.extents.y, 0);
-        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(1, 0), 0.26f, layerMask);
+        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(1, 0), 0.51f, layerMask);
         if (hits.Length > 0)
         {
             wallRight = true;
@@ -161,7 +161,7 @@ public class PlayerController : MonoBehaviour
         }
 
         positionToCheck = transform.position - new Vector3(0, GetComponent<Collider2D>().bounds.extents.y, 0);
-        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(1, 0), 0.26f, layerMask);
+        hits = Physics2D.RaycastAll(positionToCheck, new Vector2(1, 0), 0.51f, layerMask);
         if (hits.Length > 0)
         {
             wallRight = true;

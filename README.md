@@ -1,4 +1,4 @@
-# 🎁 Mysterious Gamebert Boxes
+# 🎁 Mysterious Gamebert Boxes – [**Play it on Itch.io**]([https://super-mutaz.itch.io/gamebert-boxes])
 > **A 2D platformer adventure where knowledge is power and mysterious boxes hide the fate of the game kingdom.**
 
 ---
